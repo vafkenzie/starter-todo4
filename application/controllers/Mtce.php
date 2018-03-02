@@ -19,11 +19,11 @@ class Mtce extends Application
                     $task->status = $this->app->status($task->status);
                 }
                 // INSERT the next three lines. The fourth is already there
-			if ($role == ROLE_OWNER) {
-				$result .= $this->parser->parse('oneitemx', (array) $task, true);
-			} else {
-				$result .= $this->parser->parse('oneitem', (array) $task, true);
-			}
+            if ($role == ROLE_OWNER) {
+                $result .= $this->parser->parse('oneitemx', (array) $task, true);
+            } else {
+                $result .= $this->parser->parse('oneitem', (array) $task, true);
+            }
             }
             $this->data['display_tasks'] = $result;
 
@@ -72,8 +72,8 @@ class Mtce extends Application
             );
             return $this->parser->parse('itemnav', $parms, true);
         }
-		
-		// Initiate adding a new task
+
+        // Initiate adding a new task
 public function add()
 {
     $task = $this->tasks->create();
@@ -84,8 +84,9 @@ public function add()
 // initiate editing of a task
 public function edit($id = null)
 {
-    if ($id == null)
+    if ($id == null) {
         redirect('/mtce');
+    }
     $task = $this->tasks->get($id);
     $this->session->set_userdata('task', $task);
     $this->showit();
@@ -98,12 +99,16 @@ private function showit()
     $this->data['id'] = $task->id;
 
     // if no errors, pass an empty message
-    if ( ! isset($this->data['error']))
+    if (! isset($this->data['error'])) {
         $this->data['error'] = '';
+    }
 
     $fields = array(
         'ftask'      => form_label('Task description') . form_input('task', $task->task),
         'fpriority'  => form_label('Priority') . form_dropdown('priority', $this->app->priority(), $task->priority),
+        'fsize'      => form_label('Size') . form_input('size', $task->size),
+        'fgroup'      => form_label('Group') . form_input('group', $task->group),
+        'fstatus'      => form_label('Status') . form_input('status', $task->status),
         'zsubmit'    => form_submit('submit', 'Update the TODO task'),
     );
     $this->data = array_merge($this->data, $fields);
@@ -125,39 +130,37 @@ public function submit()
     $this->session->set_userdata('task', (object) $task);
 
     // validate away
-    if ($this->form_validation->run())
-    {
-        if (empty($task->id))
-        {
-                            $task->id = $this->tasks->highest() + 1;
+    if ($this->form_validation->run()) {
+        if (empty($task->id)) {
+            $task->id = $this->tasks->highest() + 1;
             $this->tasks->add($task);
             $this->alert('Task ' . $task->id . ' added', 'success');
-        } else
-        {
+        } else {
             $this->tasks->update($task);
             $this->alert('Task ' . $task->id . ' updated', 'success');
         }
-    } else
-    {
+    } else {
         $this->alert('<strong>Validation errors!<strong><br>' . validation_errors(), 'danger');
     }
     $this->showit();
 }
 
 // build a suitable error mesage
-private function alert($message) {
-    $this->load->helper('html');        
-    $this->data['error'] = heading($message,3);
+private function alert($message)
+{
+    $this->load->helper('html');
+    $this->data['error'] = heading($message, 3);
 }
 
 // Forget about this edit
-function cancel() {
+public function cancel()
+{
     $this->session->unset_userdata('task');
     redirect('/mtce');
 }
 
 // Delete this item altogether
-function delete()
+public function delete()
 {
     $dto = $this->session->userdata('task');
     $task = $this->tasks->get($dto->id);
@@ -165,5 +168,4 @@ function delete()
     $this->session->unset_userdata('task');
     redirect('/mtce');
 }
-		
 }
