@@ -1,6 +1,6 @@
-
 <?php
 use PHPUnit\Framework\TestCase;
+
 class TaskListTest extends TestCase {
     private $CI;
     private $tasks;
@@ -24,4 +24,3 @@ class TaskListTest extends TestCase {
         $this->assertGreaterThan($complete, $incomplete);
     }
 }
->
