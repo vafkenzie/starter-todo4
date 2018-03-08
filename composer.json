@@ -1,13 +1,5 @@
 {
-    "name": "vafkenzie/todo",
-    "authors": [
-        {
-            "name": "Mackenzie Craig",
-            "email": "maccraig98@gmail.com"
-        }
-    ],
-    "require": {},
     "require-dev": {
-        "phpunit/phpunit": "^7.0"
+        "phpunit/phpunit": "^6.5.7"
     }
 }
