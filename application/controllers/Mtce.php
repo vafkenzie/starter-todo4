@@ -104,7 +104,7 @@ private function showit()
     }
 
     $fields = array(
-        'ftask'      => form_label('Task description') . form_input('task', $task->task),
+        'ftask'      => form_label('Task description') . form_input('name', $task->name),
         'fpriority'  => form_label('Priority') . form_dropdown('priority', $this->app->priority(), $task->priority),
         'fsize'      => form_label('Size') . form_input('size', $task->size),
         'fgroup'      => form_label('Group') . form_input('group', $task->group),
